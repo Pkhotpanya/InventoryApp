@@ -25,11 +25,27 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
 
-        <ImageView
-            android:id="@+id/imageview_product"
+        <LinearLayout
+            android:id="@+id/linearlayout_productimage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageview_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_image_black_48dp" />
+
+            <TextView
+                android:id="@+id/textview_emptyimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Tap to add product photo." />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/edittext_product"
@@ -68,8 +84,5 @@
                 android:text="+" />
 
         </LinearLayout>
-
-
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>
