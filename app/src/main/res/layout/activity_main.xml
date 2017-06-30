@@ -6,13 +6,43 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.inventoryapp.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1">
+
+        <ListView
+            android:id="@+id/listview_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"></ListView>
+
+        <TextView
+            android:id="@+id/textview_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif"
+            android:paddingTop="8dp"
+            android:text="Add a product to the list with the button below."
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="#A2AAB0" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingactionbutton_addproduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_black_24dp" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
