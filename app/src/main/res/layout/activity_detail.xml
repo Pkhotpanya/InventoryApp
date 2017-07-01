@@ -44,11 +44,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Tap to add product photo." />
+                android:text="@string/tap_to_add_product_photo" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/edittext_product"
+            android:id="@+id/edittext_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Product name" />

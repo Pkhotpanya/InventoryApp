@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Inventory App</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="delete_this_product">Delete this product?</string>
+    <string name="resume_editing">Resume editing</string>
+    <string name="discard">Discard</string>
+    <string name="discard_your_changes">Discard your changes and quit editing?</string>
+    <string name="unable_to_delete_product">Unable to delete product</string>
+    <string name="product_deleted">Product deleted</string>
+    <string name="success">success</string>
+    <string name="failed">failed</string>
+    <string name="add_a_product">Add a Product</string>
+    <string name="edit_product_details">Edit Product Details</string>
+    <string name="tap_to_add_product_photo">Tap to add product photo.</string>
+    <string name="failed_to_subtract_quantity">Failed to subtract quantity</string>
+    <string name="add_a_product_to_the_list_with_the_button_below">Add a product to the list with the button below.</string>
+    <string name="sale">Sale</string>
 </resources>

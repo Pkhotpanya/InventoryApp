@@ -90,7 +90,7 @@ public class ProductProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a name");
         }
 
-        Integer price = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        Float price = contentValues.getAsFloat(ProductEntry.COLUMN_PRODUCT_PRICE);
         if (price == null && price < 0) {
             throw new IllegalArgumentException("Product requires a valid price");
         }
@@ -167,7 +167,7 @@ public class ProductProvider extends ContentProvider {
         }
 
         if (contentValues.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
-            Integer price = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+            Float price = contentValues.getAsFloat(ProductEntry.COLUMN_PRODUCT_PRICE);
             if (price == null && price < 0) {
                 throw new IllegalArgumentException("Product requires a valid price");
             }

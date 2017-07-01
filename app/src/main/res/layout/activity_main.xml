@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif"
             android:paddingTop="8dp"
-            android:text="Add a product to the list with the button below."
+            android:text="@string/add_a_product_to_the_list_with_the_button_below"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="#A2AAB0" />
 

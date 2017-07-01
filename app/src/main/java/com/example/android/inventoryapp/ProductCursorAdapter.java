@@ -40,7 +40,7 @@ public class ProductCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         TextView nameTextView = (TextView) view.findViewById(R.id.textview_name);
         TextView priceTextView = (TextView) view.findViewById(R.id.textview_price);
-        TextView quantityTextView = (TextView) view.findViewById(R.id.textview_quantity);
+        final TextView quantityTextView = (TextView) view.findViewById(R.id.textview_quantity);
         Button saleButton = (Button) view.findViewById(R.id.button_sale);
 
         int idColumnIndex = cursor.getColumnIndex(ProductEntry._ID);
@@ -50,11 +50,11 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         int productId = cursor.getInt(idColumnIndex);
         String productName = cursor.getString(nameColumnIndex);
-        int productPrice = cursor.getInt(priceColumnIndex);
+        Float productPrice = cursor.getFloat(priceColumnIndex);
         int productQuantity = cursor.getInt(quantityColumnIndex);
 
         nameTextView.setText(productName);
-        priceTextView.setText(productPrice);
+        priceTextView.setText("$" + productPrice);
         quantityTextView.setText(productQuantity);
         saleButton.setTag(R.id.product_database_id, productId);
         saleButton.setTag(R.id.product_database_quantity, productQuantity);
@@ -72,6 +72,8 @@ public class ProductCursorAdapter extends CursorAdapter {
                     return;
                 } else {
                     int reducedQuantity = productDatabaseQuantity - 1;
+                    quantityTextView.setText(String.valueOf(reducedQuantity));
+
                     ContentValues values = new ContentValues();
                     values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, reducedQuantity);
 
@@ -79,7 +81,7 @@ public class ProductCursorAdapter extends CursorAdapter {
                     int rowsAffected = context.getContentResolver().update(currentProductUri, values, null, null);
                     if (rowsAffected == 0) {
                         // If no rows were affected, then there was an error with the update.
-                        Log.e("ProductCursorAdapter", "Failed to subtract quantity");
+                        Log.e("ProductCursorAdapter", context.getString(R.string.failed_to_subtract_quantity));
                     }
                 }
             }
