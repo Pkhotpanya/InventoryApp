@@ -95,7 +95,7 @@ public class ProductProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a valid price");
         }
 
-        Integer quantity = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITIY);
+        Integer quantity = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
         if (quantity == null && quantity < 0) {
             throw new IllegalArgumentException("Product requires a valid quantity");
         }
@@ -173,8 +173,8 @@ public class ProductProvider extends ContentProvider {
             }
         }
 
-        if (contentValues.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITIY)) {
-            Integer quantity = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITIY);
+        if (contentValues.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)) {
+            Integer quantity = contentValues.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (quantity == null && quantity < 0) {
                 throw new IllegalArgumentException("Product requires a valid quantity");
             }
