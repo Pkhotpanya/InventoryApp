@@ -194,7 +194,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return 0L;
     }
 
     @Override
@@ -237,7 +237,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 Bitmap bitmap = getImage(image);
                 productImageView.setImageBitmap(bitmap);
                 productImageView.setTag(UPLOADED_IMAGE_TAG);
-                productImageView.setTag(R.id.product_image_length, 0);
+                productImageView.setTag(R.id.product_image_length, 0L);
                 emptyTextView.setVisibility(View.GONE);
             } else {
                 productImageView.setImageResource(R.drawable.ic_image_black_48dp);
@@ -362,7 +362,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             long imageByteLength = (long) productImageView.getTag(R.id.product_image_length);
             Log.d("DetailActivity", "image byte count " + bitmap.getByteCount());
-            if (imageByteLength != 0 && imageByteLength > MEGABYTE) {
+            if (imageByteLength != 0L && imageByteLength > MEGABYTE) {
 
                 int bitmapWidth = bitmap.getWidth();
                 int bitmapHeight = bitmap.getHeight();
