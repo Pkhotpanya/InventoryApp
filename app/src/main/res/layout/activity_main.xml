@@ -28,11 +28,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fontFamily="sans-serif"
             android:paddingTop="8dp"
             android:text="@string/add_a_product_to_the_list_with_the_button_below"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="#A2AAB0" />
+            android:textColor="#A2AAB0"
+            android:typeface="sans" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingactionbutton_addproduct"

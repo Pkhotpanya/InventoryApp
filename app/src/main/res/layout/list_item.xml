@@ -9,23 +9,21 @@
 
     <TextView
         android:id="@+id/textview_name"
+        style="@style/TextView_ListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:fontFamily="sans-serif-medium"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#2B3D4D"
-        tools:text="Product" />
+        tools:text="@string/product" />
 
     <TextView
         android:id="@+id/textview_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textview_name"
-        android:fontFamily="sans-serif"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#AEB6BD"
-        tools:text="$0.00" />
+        android:textColor="@color/colorLightgray"
+        android:typeface="sans"
+        tools:text="@string/price_0_00" />
 
     <Button
         android:id="@+id/button_sale"
@@ -37,14 +35,12 @@
 
     <TextView
         android:id="@+id/textview_quantity"
+        style="@style/TextView_ListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@+id/button_sale"
-        android:fontFamily="sans-serif-medium"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#2B3D4D"
-        tools:text="00" />
+        tools:text="@string/quantity_00" />
 
 </RelativeLayout>

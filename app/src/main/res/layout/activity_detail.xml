@@ -51,13 +51,13 @@
             android:id="@+id/edittext_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Product name" />
+            android:hint="@string/product_name" />
 
         <EditText
             android:id="@+id/edittext_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Price" />
+            android:hint="@string/price" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,19 +69,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Quantity" />
+                android:hint="@string/quantity" />
 
             <Button
                 android:id="@+id/button_subtract"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-" />
+                android:text="@string/minus_symbol" />
 
             <Button
                 android:id="@+id/button_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+" />
+                android:text="@string/plus_symbol" />
 
         </LinearLayout>
     </LinearLayout>

@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextView_ListItem">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textColor">@color/colorMostlyBlack</item>
+    </style>
+
 </resources>

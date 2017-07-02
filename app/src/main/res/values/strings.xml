@@ -16,4 +16,12 @@
     <string name="failed_to_subtract_quantity">Failed to subtract quantity</string>
     <string name="add_a_product_to_the_list_with_the_button_below">Add a product to the list with the button below.</string>
     <string name="sale">Sale</string>
+    <string name="product">Product</string>
+    <string name="price_0_00">$0.00</string>
+    <string name="quantity_00">00</string>
+    <string name="product_name">Product name</string>
+    <string name="price">Price</string>
+    <string name="quantity">Quantity</string>
+    <string name="minus_symbol">-</string>
+    <string name="plus_symbol">+</string>
 </resources>
