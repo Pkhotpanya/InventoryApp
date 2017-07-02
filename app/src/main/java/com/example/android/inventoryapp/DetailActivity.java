@@ -291,7 +291,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveProduct();
-                finish();
                 return true;
             case R.id.action_order:
                 orderProduct();
@@ -326,9 +325,20 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         String priceString = priceEditText.getText().toString().trim();
         String quantityString = quantityEditText.getText().toString().trim();
 
-        if (currentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString)) {
+        if (currentProductUri == null
+                && TextUtils.isEmpty(nameString)
+                && TextUtils.isEmpty(priceString)
+                && TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, "Please enter product information.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(nameString)){
+            Toast.makeText(this, "Please provide a name.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(priceString)){
+            Toast.makeText(this, "Please put a price.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(quantityString)){
+            Toast.makeText(this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -386,6 +396,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         }
 
+        finish();
     }
 
 
@@ -411,6 +422,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+
+        finish();
     }
 
     private void deleteProduct() {
