@@ -14,9 +14,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
+import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -31,12 +34,20 @@ import android.widget.Toast;
 import com.example.android.inventoryapp.data.ProductContract;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static android.R.attr.bitmap;
 import static android.R.attr.name;
+import static android.R.attr.width;
 import static android.R.id.message;
+import static java.lang.Float.parseFloat;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -60,6 +71,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private LinearLayout imageLinearLayout;
 
     static final int REQUEST_IMAGE_GET = 1;
+    static final int DEFAULT_IMAGE_TAG = 100;
+    static final int UPLOADED_IMAGE_TAG = 101;
+    static final int MEGABYTE = 1000000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +108,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productImageView = (ImageView) findViewById(R.id.imageview_product);
+        productImageView.setTag(DEFAULT_IMAGE_TAG);
         emptyTextView = (TextView) findViewById(R.id.textview_emptyimage);
         imageLinearLayout = (LinearLayout) findViewById(R.id.linearlayout_productimage);
         imageLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -114,25 +129,25 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private void addOneQuantity() {
         String quantityString = quantityEditText.getText().toString();
-        Float quantity = 0.0f;
+        int quantity = 0;
         if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Float.parseFloat(quantityString);
+            quantity = Integer.parseInt(quantityString);
         }
-        quantity += 1.0f;
+        quantity += 1;
         quantityEditText.setText(String.valueOf(quantity));
     }
 
     private void subtractOneQuantity() {
         String quantityString = quantityEditText.getText().toString();
-        Float quantity = 0.0f;
+        int quantity = 0;
         if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Float.parseFloat(quantityString);
+            quantity = Integer.parseInt(quantityString);
         }
 
-        if (quantity >= 1.0) {
-            quantity -= 1.0f;
+        if (quantity >= 1) {
+            quantity -= 1;
         } else {
-            quantity = 0f;
+            quantity = 0;
         }
         quantityEditText.setText(String.valueOf(quantity));
     }
@@ -151,12 +166,35 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             Uri fullPhotoUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fullPhotoUri);
+
                 productImageView.setImageBitmap(bitmap);
+                productImageView.setTag(UPLOADED_IMAGE_TAG);
+                productImageView.setTag(R.id.product_image_length, getFileLength(fullPhotoUri));
                 emptyTextView.setVisibility(View.GONE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private long getFileLength(Uri uri) {
+        InputStream inputStream = null;
+        try {
+            inputStream = getContentResolver().openInputStream(uri);
+            File tempFile = File.createTempFile("temp_", null);
+            tempFile.deleteOnExit();
+            FileOutputStream out = new FileOutputStream(tempFile);
+            IOUtils.copy(inputStream, out);
+            long length = tempFile.length(); // Size in bytes
+            Log.d("DetailActivity", "file length " + length);
+
+            return length;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
@@ -198,9 +236,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             if (image != null) {
                 Bitmap bitmap = getImage(image);
                 productImageView.setImageBitmap(bitmap);
+                productImageView.setTag(UPLOADED_IMAGE_TAG);
+                productImageView.setTag(R.id.product_image_length, 0);
                 emptyTextView.setVisibility(View.GONE);
             } else {
                 productImageView.setImageResource(R.drawable.ic_image_black_48dp);
+                productImageView.setTag(DEFAULT_IMAGE_TAG);
                 emptyTextView.setVisibility(View.VISIBLE);
             }
 
@@ -284,7 +325,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = nameEditText.getText().toString().trim();
         String priceString = priceEditText.getText().toString().trim();
         String quantityString = quantityEditText.getText().toString().trim();
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) productImageView.getDrawable();
 
         if (currentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
@@ -296,7 +336,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
         Float price = 0.0f;
         if (!TextUtils.isEmpty(priceString)) {
-            price = Float.parseFloat(priceString);
+            price = parseFloat(priceString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
         int quantity = 0;
@@ -304,10 +344,33 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             quantity = Integer.parseInt(quantityString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-        if (bitmapDrawable != null) {
+
+        //We don't want to save the default image.
+        if ((Integer) productImageView.getTag() != DEFAULT_IMAGE_TAG) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) productImageView.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
-            byte[] imageByteArray = getBitmapAsByteArray(bitmap);
-            values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageByteArray);
+
+            long imageByteLength = (long) productImageView.getTag(R.id.product_image_length);
+            Log.d("DetailActivity", "image byte count " + bitmap.getByteCount());
+            if (imageByteLength != 0 && imageByteLength > MEGABYTE) {
+                double imageSizeMB = imageByteLength / MEGABYTE;
+                Log.d("DetailActivity", "bitmap byte count in MB " + imageSizeMB);
+
+                double reducePercentage = 1 - (Math.pow((1 - (1 / imageSizeMB)), 2.0));
+                int bitmapWidth = bitmap.getWidth();
+                int bitmapHeight = bitmap.getHeight();
+                long newWidth = Math.round(bitmapWidth * reducePercentage);
+                long newHeight = Math.round(bitmapHeight * reducePercentage);
+
+                //Smaller product image
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) newWidth, (int) newHeight, false);
+                byte[] imageByteArray = getBitmapAsByteArray(scaledBitmap);
+                scaledBitmap.recycle();
+                values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageByteArray);
+            } else {
+                byte[] imageByteArray = getBitmapAsByteArray(bitmap);
+                values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageByteArray);
+            }
         }
 
         if (currentProductUri == null) {
@@ -317,16 +380,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             int rowsAffected = getContentResolver().update(currentProductUri, values, null, null);
             if (rowsAffected == 0) {
                 // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, R.string.failed,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.failed, Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, R.string.success,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
             }
         }
 
     }
+
 
     //The ‘order more’ button sends an intent to either a phone app or an email app to contact the supplier using the information stored in the database.
     private void orderProduct() {

@@ -91,7 +91,7 @@ public class ProductProvider extends ContentProvider {
         }
 
         Float price = contentValues.getAsFloat(ProductEntry.COLUMN_PRODUCT_PRICE);
-        if (price == null && price < 0) {
+        if (price == null && price < 0.0f) {
             throw new IllegalArgumentException("Product requires a valid price");
         }
 
