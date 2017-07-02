@@ -3,5 +3,5 @@
     <item type="id" name="product_database_id" />
     <item type="id" name="product_database_quantity" />
 
-    <item type="id" name="product_image_length" />
+    <item type="id" name="product_image_uri" />
 </resources>

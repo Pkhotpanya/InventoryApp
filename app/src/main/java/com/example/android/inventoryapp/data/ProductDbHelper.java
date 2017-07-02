@@ -18,7 +18,7 @@ public class ProductDbHelper extends SQLiteOpenHelper{
             + ProductEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
             + ProductEntry.COLUMN_PRODUCT_PRICE + " REAL NOT NULL, "
             +  ProductEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
-            + ProductEntry.COLUMN_PRODUCT_IMAGE + " BLOB);";
+            + ProductEntry.COLUMN_PRODUCT_IMAGE + " TEXT);";
 
     public ProductDbHelper (Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
