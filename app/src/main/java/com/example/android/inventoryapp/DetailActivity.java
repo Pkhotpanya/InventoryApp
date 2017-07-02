@@ -353,17 +353,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             long imageByteLength = (long) productImageView.getTag(R.id.product_image_length);
             Log.d("DetailActivity", "image byte count " + bitmap.getByteCount());
             if (imageByteLength != 0 && imageByteLength > MEGABYTE) {
-                double imageSizeMB = imageByteLength / MEGABYTE;
-                Log.d("DetailActivity", "bitmap byte count in MB " + imageSizeMB);
 
-                double reducePercentage = 1 - (Math.pow((1 - (1 / imageSizeMB)), 2.0));
                 int bitmapWidth = bitmap.getWidth();
                 int bitmapHeight = bitmap.getHeight();
-                long newWidth = Math.round(bitmapWidth * reducePercentage);
-                long newHeight = Math.round(bitmapHeight * reducePercentage);
+                Bitmap scaledBitmap;
+                if (bitmapWidth > bitmapHeight) {
+                    scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) 400, (int) 300, false);
+                } else {
+                    scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) 300, (int) 400, false);
+                }
 
-                //Smaller product image
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) newWidth, (int) newHeight, false);
                 byte[] imageByteArray = getBitmapAsByteArray(scaledBitmap);
                 scaledBitmap.recycle();
                 values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageByteArray);
@@ -485,6 +484,5 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         showUnsavedChangesDialog(discardButtonClickListener);
     }
-
-
+    
 }
