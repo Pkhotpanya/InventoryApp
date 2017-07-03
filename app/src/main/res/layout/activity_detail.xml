@@ -57,7 +57,8 @@
             android:id="@+id/edittext_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/price" />
+            android:hint="@string/price"
+            android:inputType="numberDecimal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +70,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/quantity" />
+                android:hint="@string/quantity"
+                android:inputType="number" />
 
             <Button
                 android:id="@+id/button_subtract"

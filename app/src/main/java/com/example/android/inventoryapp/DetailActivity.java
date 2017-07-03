@@ -46,6 +46,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.R.attr.bitmap;
 import static android.R.attr.name;
 import static android.R.attr.width;
@@ -64,14 +67,22 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
-    private EditText nameEditText;
-    private EditText priceEditText;
-    private EditText quantityEditText;
-    private Button addButton;
-    private Button subtractButton;
-    private ImageView productImageView;
-    private TextView emptyTextView;
-    private LinearLayout imageLinearLayout;
+    @BindView(R.id.edittext_name)
+    EditText nameEditText;
+    @BindView(R.id.edittext_price)
+    EditText priceEditText;
+    @BindView(R.id.edittext_quantity)
+    EditText quantityEditText;
+    @BindView(R.id.button_add)
+    Button addButton;
+    @BindView(R.id.button_subtract)
+    Button subtractButton;
+    @BindView(R.id.imageview_product)
+    ImageView productImageView;
+    @BindView(R.id.textview_emptyimage)
+    TextView emptyTextView;
+    @BindView(R.id.linearlayout_productimage)
+    LinearLayout imageLinearLayout;
 
     private static final int PICK_IMAGE_REQUEST = 0;
     private static final int DEFAULT_IMAGE_TAG = 100;
@@ -92,27 +103,20 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(0, null, this);
         }
 
-        nameEditText = (EditText) findViewById(R.id.edittext_name);
-        priceEditText = (EditText) findViewById(R.id.edittext_price);
-        quantityEditText = (EditText) findViewById(R.id.edittext_quantity);
-        addButton = (Button) findViewById(R.id.button_add);
+        ButterKnife.bind(this);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addOneQuantity();
             }
         });
-        subtractButton = (Button) findViewById(R.id.button_subtract);
         subtractButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 subtractOneQuantity();
             }
         });
-        productImageView = (ImageView) findViewById(R.id.imageview_product);
         productImageView.setTag(DEFAULT_IMAGE_TAG);
-        emptyTextView = (TextView) findViewById(R.id.textview_emptyimage);
-        imageLinearLayout = (LinearLayout) findViewById(R.id.linearlayout_productimage);
         imageLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -385,6 +389,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         } else if (TextUtils.isEmpty(quantityString)) {
             Toast.makeText(this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
             return;
+        } else if ((Integer) productImageView.getTag() == DEFAULT_IMAGE_TAG) {
+            Toast.makeText(this, "Please upload an image.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         ContentValues values = new ContentValues();
@@ -399,12 +406,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             quantity = Integer.parseInt(quantityString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-
-        //We don't want to save the default image.
-        if ((Integer) productImageView.getTag() != DEFAULT_IMAGE_TAG) {
-            String uriString = (String) productImageView.getTag(R.id.product_image_uri);
-            values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, uriString);
-        }
+        String uriString = (String) productImageView.getTag(R.id.product_image_uri);
+        values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, uriString);
 
         if (currentProductUri == null) {
             Uri newRowUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
@@ -492,13 +495,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 deleteProduct();
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, null);
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

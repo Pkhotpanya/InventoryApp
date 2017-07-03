@@ -17,17 +17,24 @@ import android.widget.ListView;
 import com.example.android.inventoryapp.data.ProductContract;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ProductCursorAdapter cursorAdapter;
+    @BindView(R.id.floatingactionbutton_addproduct) FloatingActionButton fab;
+    @BindView(R.id.listview_list) ListView productListView;
+    @BindView(R.id.textview_empty) View emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_addproduct);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,10 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        ListView productListView = (ListView) findViewById(R.id.listview_list);
-        View emptyView = findViewById(R.id.textview_empty);
         productListView.setEmptyView(emptyView);
-
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

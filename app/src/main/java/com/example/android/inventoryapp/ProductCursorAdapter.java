@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.android.inventoryapp.data.ProductContract;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import butterknife.BindView;
+
 import static android.R.attr.id;
 
 /**
@@ -25,7 +27,6 @@ import static android.R.attr.id;
  */
 
 public class ProductCursorAdapter extends CursorAdapter {
-
 
     public ProductCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
